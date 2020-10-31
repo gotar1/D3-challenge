@@ -1,12 +1,9 @@
-// The code for the chart is wrapped inside a function
-// that automatically resizes the chart
-
 // if the SVG area isn't empty when the browser loads, remove it
 // and replace it with a resized version of the chart
 let svgArea = d3.select("#scatter").select("svg");
 if (!svgArea.empty()) {
   svgArea.remove();
-}
+};
 
 // Setting the SVG perimeter
 let svgWidth = 1000;
@@ -19,16 +16,13 @@ let margin = {
   bottom: 80,
   left: 100
 };
+
 // Chart area
 let height = svgHeight - margin.top - margin.bottom;
 let width = svgWidth - margin.left - margin.right;
 
 // Y axis is going to be Healthcare
 // X axis is going to be Poverty
-// let chosenX = 'Poverty';
-// let chosenY = 'Healthcare';
-
-
 
 // append svg and group
 let svg = d3
@@ -41,15 +35,13 @@ let chartGroup = svg
   .append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-// data
+// data and fuction to build chart..
 function buildChart() {
   d3.csv('./assets/data/data.csv').then(d => {
     console.log(d)
+    
     let abbr = d.map(d => d.abbr);
     console.log(abbr)
-
-    let xAxis = 'Poverty';
-    let yAxis = 'Healthcare';
     
     let poverty = d.map(d => parseFloat(d.poverty));
     console.log(poverty);
@@ -57,6 +49,7 @@ function buildChart() {
     let healthCare = d.map(d => parseFloat(d.healthcare));
     console.log(healthCare);
 
+    // call our axis rendering and scale functions to populate our axis and append circles and text to data points.. 
     let scale = axisScale(poverty, healthCare);
     renderAxes(scale);
 
@@ -70,20 +63,40 @@ function buildChart() {
         .attr("cy", d => scale.y(parseFloat(d.healthcare)))
         .attr("r", 15)
         .attr("fill", "blue")
-        .style("opacity", 0.5)
+        .attr("opacity", 0.5)
 
-    // Set up y axis label
+    // Set up and append text with state appreviation to show inside circle..
     chartGroup.selectAll("dot")
       .data(d)
       .enter()
       .append("text")
         .text(d => d.abbr)
         .attr("x", d => scale.x(parseFloat(d.poverty)))
-        .attr("y", d => scale.y(parseFloat(d.healthcare)) + 3)
+        .attr("y", d => scale.y(parseFloat(d.healthcare)))
         .attr("fill", "white")
         .attr('text-anchor', 'middle')
         .attr("font-size", 10)
-        
+    
+    // set x axis label..
+    chartGroup.append("text")
+        .attr("transform", `translate(${width / 2}, ${height + 24})`)
+        .attr("x", -25)
+        .attr("y", 35)
+        .classed("axis-text", true)
+        .text("In Poverty (%)")
+        .attr("fill", "white")
+        .attr("font-size", 25)
+
+    // Set up y axis label
+    chartGroup.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x", 0 - (height/1.5))
+      .attr("dy", "1em")
+      .classed("axis-text", true)
+      .text("Lacks Healthcare (%)")
+      .attr("fill", "white")
+      .attr("font-size", 25)
     
   }).catch(err => console.log(err))
 
@@ -104,11 +117,12 @@ function renderAxes(scale) {
     .call(leftAxis);
 };
 
-// Create a function that will go through and update the x_scale upon clicking on the axis label
+// function to setup axis scales....
 function axisScale(chosenX, chosenY) {
-  // create linear scale
+
+  // create linear scales for x and y axis
   let xLinearScale = d3.scaleLinear()
-    .domain([d3.min(chosenX) - 1 ,d3.max(chosenX)])
+    .domain([d3.min(chosenX) - 2 ,d3.max(chosenX)])
     .range([0, width]);
   
   let yLinearScale = d3.scaleLinear()
@@ -116,7 +130,8 @@ function axisScale(chosenX, chosenY) {
     .range([height, 0]);
   
   return {'x': xLinearScale, 'y': yLinearScale}
-}
+};
 
+// call functtion to build chart
 buildChart();
 
