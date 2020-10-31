@@ -62,7 +62,7 @@ function buildChart() {
 
     // append circles to data points
     chartGroup.append("g")
-      .selectAll("circle")
+      .selectAll("dot")
       .data(d)
       .enter()
       .append("circle")
@@ -70,19 +70,20 @@ function buildChart() {
         .attr("cy", d => scale.y(parseFloat(d.healthcare)))
         .attr("r", 15)
         .attr("fill", "blue")
-        .style('opacity', 0.5)
+        .style("opacity", 0.5)
 
     // Set up y axis label
-    chartGroup.selectAll("circle")
+    chartGroup.selectAll("dot")
       .data(d)
       .enter()
       .append("text")
-      .text(abbr)
-      .attr("x", d => scale.x(poverty))
-      .attr("y", d => scale.y(healthCare))
-      .style("fill", "white")
-      .style("font-size", 12)
-      
+        .text(d => d.abbr)
+        .attr("x", d => scale.x(parseFloat(d.poverty)))
+        .attr("y", d => scale.y(parseFloat(d.healthcare)) + 3)
+        .attr("fill", "white")
+        .attr('text-anchor', 'middle')
+        .attr("font-size", 10)
+        
     
   }).catch(err => console.log(err))
 
