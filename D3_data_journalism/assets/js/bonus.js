@@ -53,8 +53,8 @@ function buildChart() {
     renderAxes(scale);
 
     // append circles to data points
-    chartGroup.append("g")
-      .selectAll("circle")
+    let circlesGroup = chartGroup.append("g")
+      .selectAll("dot")
       .data(d)
       .enter()
       .append("circle")
@@ -130,6 +130,44 @@ function axisScale(chosenX, chosenY) {
   
   return {'x': xLinearScale, 'y': yLinearScale}
 };
+
+// functoin used for updating the circles group with a transition to new circles
+function renderCircles(circlesGroup, newXScale, chosenX) {
+    circlesGroup.transition()
+        .duration(1000)
+        .attr("cx", d => newXScale(d[chosenX]))
+    
+    return circlesGroup;
+};
+
+// // update the circles group with a new tooltip
+function updateToolTip(chosenX, circlesGroup) {
+    let label;
+
+    if (chosenX === ) {
+        label = 
+    }
+    else {
+        label = 
+    }
+
+    let toolTip = d3.tip()
+        .attr("class", "tooltip")
+        .offset([80, -60])
+        .html(function(d) {
+            // return (`${d.}<br><br>${label} ${d[chosenX]}`);
+        });
+    
+    circlesGroup.call(toolTip);
+
+    circlesGroup.on("mouseover", function(data) {
+        toolTip.show(data);
+    })
+    .on("mouseout", function(data) {
+        toolTip.hide(data);
+    });
+    return circlesGroup
+}
 
 // call functtion to build chart
 buildChart();
