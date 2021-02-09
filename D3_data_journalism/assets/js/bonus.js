@@ -141,33 +141,33 @@ function renderCircles(circlesGroup, newXScale, chosenX) {
 };
 
 // // update the circles group with a new tooltip
-function updateToolTip(chosenX, circlesGroup) {
-    let label;
+// function updateToolTip(chosenX, circlesGroup) {
+//     let label;
 
-    if (chosenX === ) {
-        label = 
-    }
-    else {
-        label = 
-    }
+//     if (chosenX === ) {
+//         label = 
+//     }
+//     else {
+//         label = 
+//     }
 
-    let toolTip = d3.tip()
-        .attr("class", "tooltip")
-        .offset([80, -60])
-        .html(function(d) {
-            // return (`${d.}<br><br>${label} ${d[chosenX]}`);
-        });
+//     let toolTip = d3.tip()
+//         .attr("class", "tooltip")
+//         .offset([80, -60])
+//         .html(function(d) {
+//             // return (`${d.}<br><br>${label} ${d[chosenX]}`);
+//         });
     
-    circlesGroup.call(toolTip);
+//     circlesGroup.call(toolTip);
 
-    circlesGroup.on("mouseover", function(data) {
-        toolTip.show(data);
-    })
-    .on("mouseout", function(data) {
-        toolTip.hide(data);
-    });
-    return circlesGroup
-}
+//     circlesGroup.on("mouseover", function(data) {
+//         toolTip.show(data);
+//     })
+//     .on("mouseout", function(data) {
+//         toolTip.hide(data);
+//     });
+//     return circlesGroup
+// }
 
 // call functtion to build chart
 buildChart();
